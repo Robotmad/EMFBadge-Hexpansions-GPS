@@ -14,6 +14,9 @@ import time
 
 VERSION = 1
 
+# TODO: Replace this temporary development/pre-production PID with the
+# final production PID (or load it from board metadata/config) once the
+# production Hexpansion boards are finalized.
 HEXPANSION_PID = 0x1295
 DEFAULT_PORT = 3
 
