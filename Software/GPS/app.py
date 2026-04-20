@@ -20,7 +20,7 @@ VERSION = 1
 HEXPANSION_PID = 0x1295
 DEFAULT_PORT = 3
 
-# Hardware defintions:
+# Hardware definitions:
 TX_PIN  = 1    # HS_G for TX
 RX_PIN  = 0    # HS_F for RX
 RESET_PIN = 2  # HS_H for reset
