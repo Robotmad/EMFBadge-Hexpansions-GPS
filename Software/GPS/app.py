@@ -12,8 +12,6 @@ from tildagonos import tildagonos
 from machine import I2C, UART, Pin
 import time
 
-VERSION = 1
-
 # TODO: Replace this temporary development/pre-production PID with the
 # final production PID (or load it from board metadata/config) once the
 # production Hexpansion boards are finalized.
@@ -30,6 +28,9 @@ PPS_PIN = 3    # HS_I for PPS
 class L80KApp(app.App):         # pylint: disable=no-member
     def __init__(self, config: HexpansionConfig | None = None):
         super().__init__()
+
+        self.VERSION = 1         # Increment this when making changes to the app that require the hexpansion app to be re-flashed with the new code.
+
         # If run from EEPROM on the hexpansion, the config will be passed in with the correct pin objects
         self.config: HexpansionConfig | None = config
         if config is None:
@@ -68,12 +69,7 @@ class L80KApp(app.App):         # pylint: disable=no-member
         for hs_pin in self.config.pin:
             hs_pin.init(mode=Pin.IN)
 
-
-    def get_version(self) -> int:
-        """ Get the version of the app - this is used to determine if an upgrade is required. """
-        return VERSION
-
-
+    
     async def handle_stop_app(self, event: RequestStopAppEvent):
         """ Handle the RequestStopAppEvent so that we can release resources """
         if event.app == self:
