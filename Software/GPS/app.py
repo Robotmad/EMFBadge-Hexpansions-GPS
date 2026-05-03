@@ -19,8 +19,8 @@ HEXPANSION_PID = 0x1295
 DEFAULT_PORT = 3
 
 # Hardware definitions:
-TX_PIN  = 1    # HS_G for TX
-RX_PIN  = 0    # HS_F for RX
+TX_PIN  = 0    # HS_F for TX to GPS Module
+RX_PIN  = 1    # HS_G for RX from GPS Module
 RESET_PIN = 2  # HS_H for reset
 PPS_PIN = 3    # HS_I for PPS
 
