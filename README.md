@@ -26,10 +26,10 @@ It’s intended as a **starting point** for developing GPS-enabled badge apps.
 
 ## 🖼️ Hardware
 
-![GPS Hexpansion Top](Images/GPS-Top)
-![GPS Hexpansion Bottom](Images/GPS-Bottom)
+![GPS Hexpansion Top](Images/GPS-Top.jpg)
+![GPS Hexpansion Bottom](Images/GPS-Bottom.jpg)
 ![Badge with Hexpansion](Images/IMG_1443.jpeg)
-![Hexpansion Layout](Images/GPS-Layout)
+![Hexpansion Layout](Images/PCB-Layout.PNG)
 ---
 
 ## 🔌 Hardware Details
