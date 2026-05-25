@@ -2868,16 +2868,6 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 115.57) (xy 149.86 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "24745a90-a2f8-4254-b9e3-72ba1a6e5ed8")
-	)
-	(wire
-		(pts
 			(xy 58.42 52.07) (xy 55.88 52.07)
 		)
 		(stroke
@@ -2915,16 +2905,6 @@
 			(type default)
 		)
 		(uuid "30143624-0563-4e1d-b63d-f259e15a2312")
-	)
-	(wire
-		(pts
-			(xy 140.97 107.95) (xy 140.97 71.12)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "32561ef2-e9ed-427b-87f1-e8414431c84e")
 	)
 	(wire
 		(pts
@@ -3025,16 +3005,6 @@
 			(type default)
 		)
 		(uuid "42f43975-af81-47c8-94e6-b46db570e5e5")
-	)
-	(wire
-		(pts
-			(xy 149.86 107.95) (xy 149.86 73.66)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "46d55920-5467-4c45-bf5c-b3c9f19ae153")
 	)
 	(wire
 		(pts
@@ -3185,6 +3155,16 @@
 			(type default)
 		)
 		(uuid "6e2e3b58-60b9-48a0-89ad-24755254d04c")
+	)
+	(wire
+		(pts
+			(xy 140.97 71.12) (xy 140.97 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6fac7694-0dd5-4158-a2d0-32b05203607c")
 	)
 	(wire
 		(pts
@@ -3398,6 +3378,16 @@
 	)
 	(wire
 		(pts
+			(xy 149.86 73.66) (xy 149.86 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4a13c61-2167-4488-a4ab-3bf651a49ea2")
+	)
+	(wire
+		(pts
 			(xy 236.22 101.6) (xy 217.17 101.6)
 		)
 		(stroke
@@ -3548,6 +3538,16 @@
 	)
 	(wire
 		(pts
+			(xy 140.97 115.57) (xy 140.97 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d833cb8d-e047-454b-8e88-0319a76ca931")
+	)
+	(wire
+		(pts
 			(xy 43.18 60.96) (xy 43.18 44.45)
 		)
 		(stroke
@@ -3568,13 +3568,13 @@
 	)
 	(wire
 		(pts
-			(xy 140.97 115.57) (xy 140.97 116.84)
+			(xy 149.86 115.57) (xy 149.86 116.84)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "dbeb1a53-853b-45f1-876e-4f4a299adcf1")
+		(uuid "de9647f8-3f84-4230-8f90-0f00bc9bae00")
 	)
 	(wire
 		(pts
@@ -4612,7 +4612,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_01005_0402Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 227.0252 62.23 0)
 			(effects
 				(font
@@ -4803,7 +4803,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_01005_0402Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 227.0252 73.66 0)
 			(effects
 				(font
@@ -4920,7 +4920,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED")
-		(at 140.97 111.76 270)
+		(at 140.97 111.76 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4929,24 +4929,24 @@
 		(fields_autoplaced yes)
 		(uuid "90fd3a7b-4212-4ae4-8053-624ad31f45f0")
 		(property "Reference" "D1"
-			(at 143.51 108.9024 90)
+			(at 144.78 112.0774 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Value" "GREEN"
-			(at 143.51 111.4424 90)
+		(property "Value" "WHITE"
+			(at 144.78 114.6174 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0201_0603Metric"
+		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
 			(at 140.97 111.76 0)
 			(effects
 				(font
@@ -5439,7 +5439,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_01005_0402Metric"
+		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
 			(at 237.1852 62.23 0)
 			(effects
 				(font
@@ -5688,7 +5688,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED")
-		(at 149.86 111.76 270)
+		(at 149.86 111.76 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5697,24 +5697,24 @@
 		(fields_autoplaced yes)
 		(uuid "ebe35268-611b-4703-9ad1-21552fbba54a")
 		(property "Reference" "D2"
-			(at 152.4 108.9024 90)
+			(at 153.67 112.0774 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
 		(property "Value" "RED"
-			(at 152.4 111.4424 90)
+			(at 153.67 114.6174 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
+				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_0201_0603Metric"
+		(property "Footprint" "LED_SMD:LED_0603_1608Metric"
 			(at 149.86 111.76 0)
 			(effects
 				(font
