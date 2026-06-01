@@ -6,7 +6,7 @@ This project provides a working foundation for adding location awareness to badg
 
 Designed for experimentation, hacking, and building more advanced location-based features.
 
-They are available to buy here: https://themachineshop.uk/product/gps-hexpansion/
+They are available to buy here: https://themachineshop.uk/products/gps-hexpansion/
 
 ---
 
