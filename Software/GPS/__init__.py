@@ -1,1 +1,1 @@
-from .app import L80KApp
+from .app import GPS

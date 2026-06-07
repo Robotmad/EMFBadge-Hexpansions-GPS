@@ -2,34 +2,37 @@ import app
 
 from events.input import Buttons, BUTTON_TYPES, ButtonDownEvent, ButtonUpEvent
 from system.eventbus import eventbus
-from tildagonos import tildagonos
-from machine import UART,Pin
-import time
+from system.hexpansion.util import get_app_by_vid_pid
 
-class L80KApp(app.App):
+
+class GPS(app.App):
+
     def __init__(self):
+        self.gps = get_app_by_vid_pid(0x7CAB, 0xBEAC)
+
+        self.last_position = None
+        self.last_speed = 0
+        self.last_bearing = 0
+
+        if self.gps:
+            eventbus.on(
+                self.gps.GPSEvent,
+                self.handle_gps_event,
+                self
+            )
+            print("GPS Hexpansion found")
+        else:
+            print("GPS Hexpansion NOT found")
+
         self.button_states = Buttons(self)
-        self.last_fix = None
         eventbus.on(ButtonDownEvent, self._handle_buttondown, self)
         eventbus.on(ButtonUpEvent, self._handle_buttonup, self)
-        self.uart = UART(1, baudrate=9600, tx=Pin(34), rx = Pin(33))
-        self.ubx_buffer = b""
-        self.reset = Pin(47, Pin.OUT)
-        self.reset.value(1)
-        time.sleep(0.1)
-        self.reset.value(0)
-        self.pps = Pin(48, Pin.IN)
-
 
     def on_resume(self):
         print("resumed")
-        eventbus.on(ButtonDownEvent, self._handle_buttondown, self)
-        eventbus.on(ButtonUpEvent, self._handle_buttonup, self)
-
+    
     def on_pause(self):
         print("paused")
-        eventbus.remove(ButtonDownEvent, self._handle_buttondown, self)
-        eventbus.remove(ButtonUpEvent, self._handle_buttonup, self)
 
     def _handle_buttondown(self, event: ButtonDownEvent):
         if BUTTON_TYPES["LEFT"] in event.button:
@@ -46,7 +49,7 @@ class L80KApp(app.App):
         if BUTTON_TYPES["CANCEL"] in event.button:
             self.button_states.clear()
             self.minimise()
-
+    
     def _handle_buttonup(self, event: ButtonUpEvent):
         if BUTTON_TYPES["LEFT"] in event.button:
             print("Left Button Up")
@@ -56,72 +59,50 @@ class L80KApp(app.App):
             print("Right Button Up")
             self.button_states.clear()
 
+    def handle_gps_event(self, event):
+
+        self.last_position = event.position
+        self.last_speed = event.speed
+        self.last_bearing = event.bearing
+
+        print("GPS Event")
+        print("Position:", event.position)
+        print("Speed:", event.speed)
+        print("Bearing:", event.bearing)
+
     def update(self, delta):
         pass
 
-    def background_update(self, delta):
-        line = self.uart.readline()
-
-        if line:
-            print(line)
-            try:
-                line = line.decode().strip()
-
-                result = parse_nmea_rmc(line)
-
-                if result:
-                    self.last_fix = result
-                    print(result)
-
-            except:
-                pass
-
-
     def draw(self, ctx):
+
         ctx.rgb(0, 0.2, 0).rectangle(-120, -120, 240, 240).fill()
         ctx.rgb(0, 1, 0)
 
-        if self.last_fix:
-            ctx.move_to(-100, -10).text("Lat: " + str(round(self.last_fix["lat"], 5)))
-            ctx.move_to(-100, 20).text("Lon: " + str(round(self.last_fix["lon"], 5)))
-            for i in range(1, 13):
-                tildagonos.leds[i] = (0, 10, 0)
-                tildagonos.leds.write()
-        else:
-            ctx.move_to(-100, 0).text("Searching...")
-            for i in range(1,13):
-                tildagonos.leds[i] = (0,0,0)
-                tildagonos.leds.write()
+        if not self.gps:
+            ctx.move_to(-100, 0).text("GPS Not Found")
+            return
 
-def parse_nmea_rmc(line):
-    parts = line.split(',')
+        if not self.last_position:
+            ctx.move_to(-100, 0).text("Waiting For Fix")
+            return
 
-    if parts[0] not in ("$GNRMC", "$GPRMC"):
-        return None
-    elif parts[2] != "A":  # A = valid, V = invalid
-        return None
-    else:
-        lat_raw = parts[3]
-        lat_dir = parts[4]
-        lon_raw = parts[5]
-        lon_dir = parts[6]
+        lat, lon = self.last_position
 
-        if not lat_raw or not lon_raw:
-            return None
+        ctx.move_to(-110, -40).text(
+            "Lat: %.5f" % lat
+        )
 
-    # Convert to decimal degrees
-        lat = float(lat_raw[:2]) + float(lat_raw[2:]) / 60
-        lon = float(lon_raw[:3]) + float(lon_raw[3:]) / 60
+        ctx.move_to(-110, -10).text(
+            "Lon: %.5f" % lon
+        )
 
-        if lat_dir == "S":
-            lat = -lat
-        if lon_dir == "W":
-            lon = -lon
+        ctx.move_to(-110, 20).text(
+            "Spd: %.1f kt" % self.last_speed
+        )
 
-        return {
-            "lat": lat,
-            "lon": lon
-        }
+        ctx.move_to(-110, 50).text(
+            "Brg: %.0f" % self.last_bearing
+        )
 
 
-__app_export__ = L80KApp
+__app_export__ = GPS
