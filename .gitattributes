@@ -1,6 +1,7 @@
 # Documentation
 README.md export-ignore
 tildagon.toml export-ignore
+.DS_Store export-ignore
 
 # Hardware design files
 Gerbers/ export-ignore
