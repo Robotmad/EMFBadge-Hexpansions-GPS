@@ -1,0 +1,16 @@
+# Documentation
+README.md export-ignore
+tildagon.toml export-ignore
+
+# Hardware design files
+Gerbers/ export-ignore
+Images/ export-ignore
+KiCAD/ export-ignore
+Libraries/ export-ignore
+
+# Development and testing
+Software/GPS/bin/ export-ignore
+Software/GPS/include/ export-ignore
+Software/GPS/lib/ export-ignore
+Software/GPS/pyvenv.cfg export-ignore
+
