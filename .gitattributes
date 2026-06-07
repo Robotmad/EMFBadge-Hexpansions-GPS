@@ -2,6 +2,7 @@
 README.md export-ignore
 tildagon.toml export-ignore
 .DS_Store export-ignore
+.gitignore export-ignore
 
 # Hardware design files
 Gerbers/ export-ignore
@@ -14,4 +15,5 @@ Software/GPS/bin/ export-ignore
 Software/GPS/include/ export-ignore
 Software/GPS/lib/ export-ignore
 Software/GPS/pyvenv.cfg export-ignore
+Software/GPS/metadata.json export-ignore
 
