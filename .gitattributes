@@ -16,5 +16,5 @@ Software/GPS/include/ export-ignore
 Software/GPS/lib/ export-ignore
 Software/GPS/pyvenv.cfg export-ignore
 Software/GPS/metadata.json export-ignore
-Software/GPS/EEPROM/
+Software/GPS/EEPROM/ export-ignore
 
