@@ -1,5 +1,6 @@
 # 📡 GPS Hexpansion for Tildagon Badge
 
+
 A GPS Hexpansion module and basic software implementation for the Tildagon badge.
 
 This project provides a working foundation for adding location awareness to badge applications — including hardware integration, UART communication, and NMEA parsing.
