@@ -64,7 +64,7 @@ This provides a clean base layer for any GPS-driven feature.
 3. Valid sentences are identified
 4. Data is parsed into usable values
 5. Position data becomes available to your application
-
+6. LED D1 is lit when there is a valid fix
 ---
 
 ## 🚀 Getting Started
@@ -85,7 +85,6 @@ git clone https://github.com/TechCabin/EMFBadge-Hexpansions-GPS.git
 
 * Outdoor use significantly improves performance
 * First fix can take 30–60 seconds (cold start)
-* Currently only works in slot C
 
 ---
 
@@ -96,7 +95,6 @@ git clone https://github.com/TechCabin/EMFBadge-Hexpansions-GPS.git
 * [ ] Abstract GPS into a reusable module/class
 * [ ] Add example applications (mapping, tracking, etc.)
 * [ ] Add signal quality / satellite info
-* [ ] Auto-detect hexpansion port and change UART pins
 
 ---
 
