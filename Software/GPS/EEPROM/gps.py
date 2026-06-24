@@ -7,7 +7,7 @@ app keeps working), and buffers the recent raw NMEA sentences so apps can parse
 whatever else they need (GGA/GSV/GSA for altitude, satellite counts, sky maps)
 themselves, on the badge where there is plenty of space.
 
-D1 (Green/White) lit when valid fix obtained.
+checks for unused UART resource before using either UART1 or UART2
 
 Based on the GPS firmware from https://github.com/mbooth101/emf-speedometer
 License: MIT
@@ -18,8 +18,13 @@ import time
 
 from events import Event
 from system.eventbus import eventbus
-from machine import UART, Pin
+from machine import UART, Pin, mem32
+from micropython import const
 
+# --- Pre-evaluated ESP32-S3 Hardware Registers & Masks ---
+_CLK_REG   = const(0x600C0018)  # SYSTEM_PERIP_CLK_EN0_REG
+_U1_BIT    = const(1 << 5)      # UART1 clock enable bit
+_U2_BIT    = const(1 << 23)     # UART2 clock enable bit
 
 class GPSApp(app.App):
     """Provides a GPS API for apps to use directly and GPS Events to subscribe to."""
@@ -43,22 +48,34 @@ class GPSApp(app.App):
         self.config = config
 
         self._position = None
-        self._bearing = 0.0
-        self._speed = 0.0
+        self._bearing = 0
+        self._speed = 0
 
         # Ring buffer of recent raw NMEA sentences (checksum stripped)
         self._lines = []
 
         self.to = 10
-        self.uart = UART(1, baudrate=9600, tx=config.pin[0], rx=config.pin[1], timeout=self.to)
+        self.uart = None
+        u = 0
+
+        # try to initialise UART 1 or 2 for GPS use
+        # micropython is rather flawed and assumes that there is one 'thing' controlling use of the hardware
+        # which it expects to manage which UARTs are used for what, hence if we ask for UART1 we get it regardless
+        # of wheter it was already allocated to something else.  Unfortunately the hexpansion system
+        # allows for many different hardware configurations so we can't always have UART1 (or even UART2)
+        # Check if UART peripheral clock gating is enabled
+        if not (mem32[_CLK_REG] & _U1_BIT):
+            # no - so UART1 is available
+            u = 1
+        elif not (mem32[_CLK_REG] & _U2_BIT):
+            # no - so UART2 is available
+            u = 2
+        if 0 < u:
+            self.uart = UART(u, baudrate=9600, tx=config.pin[0], rx=config.pin[1], timeout=self.to)
 
         self.r = config.pin[2]
         self.r.init(mode=Pin.OUT)
         self.r.value(1)
-
-        self.l = config.ls_pin[2]
-        self.l.init(mode=Pin.OUT)
-        self.l.value(0) # D1 LED off
 
         self.z = 0
 
@@ -66,7 +83,8 @@ class GPSApp(app.App):
     # See https://github.com/emfcamp/badge-2024-software/pull/328
     def deinit(self):
         """release the UART."""
-        self.uart.deinit()
+        if self.uart is not None:
+            self.uart.deinit()
 
     @property
     def position(self):
@@ -78,7 +96,7 @@ class GPSApp(app.App):
 
     @property
     def speed(self):
-        return round(self._speed, 2)
+        return self._speed # round(self._speed, 2) - leave rounding to receiving app to save code space
 
     @property
     def sentences(self):
@@ -104,12 +122,10 @@ class GPSApp(app.App):
         if self._position and self.z > 9999:
             self._position = None
             self._speed = 0
-            self.l.value(0) # D1 LED off
-
-        l = self.uart.readline()
-        if not l:
-            return False
         try:
+            l = self.uart.readline()        # moved inside try block as the least code to cope with potential that we don't actually have a uart
+            if not l:
+                return False
             line = l.decode().strip().split('*')[0]
             self._lines.append(line)
             if len(self._lines) > 40:
@@ -128,10 +144,10 @@ class GPSApp(app.App):
                     self._speed = float(p[7]) if p[7] else 0.0
                     if p[8]:
                         self._bearing = float(p[8])
-                    if self._speed < 1:
-                        self._speed = 0
+                    # Ignoring small speeds can be done in the application to save code space
+                    # #if self._speed < 1:
+                    #    self._speed = 0
                     self.z = 0
-                    self.l.value(1) # D1 LED on
                 eventbus.emit(self.GPSEvent(self._position, self._speed, self._bearing))
         except: # removed to save code space (UnicodeError, ValueError, AttributeError, IndexError):
             pass
